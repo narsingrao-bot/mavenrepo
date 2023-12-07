@@ -1,41 +1,31 @@
-pipeline 
-{
+pipeline {
     agent any
 
-    stages 
-    {
-        stage('Build') 
-        {
-            steps 
-            {
-                echo 'Build App'
-            }
-        }
-
-        stage('Test') 
-        {
-            steps 
-            {
-                echo 'Test App'
-            }
-        }
-
-        stage('Deploy') 
-        {
-            steps 
-            {
-                echo 'Deploy App'
-            }
-        }
+    tools {
+       
+        maven "MAVEN_HOME"
     }
 
-    post
-    {
+    stages {
+        stage('Build') {
+            steps {
+                
+                git 'https://github.com/jglick/simple-maven-project-with-tests.git'
 
-    	always
-    	{
-    		emailext body: '', subject: 'maven build', to: 'sfaraz106@gmail.com'
-    	}
+                // Run Maven on a Unix agent.
+               // sh "mvn -Dmaven.test.failure.ignore=true clean package"
 
+                 To run Maven on a Windows agent, use
+                 bat "mvn -Dmaven.test.failure.ignore=true clean package"
+            }
+
+            post {
+                
+                success {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                    archiveArtifacts 'target/*.jar'
+                }
+            }
+        }
     }
 }
