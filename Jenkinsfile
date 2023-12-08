@@ -5,14 +5,14 @@ pipeline {
         string(name: 'Browsersite', defaultValue: 'Chrome', description: 'Code to run on browser')
     }
 
+     tools {
+            maven "MAVEN_HOME"
+          }
+
     stages {
         stage('Build') {
             steps {
-                tools {
-
-                     maven "MAVEN_HOME"
-                }
-
+               bat 'mvn clean install'
             }
         }
 
