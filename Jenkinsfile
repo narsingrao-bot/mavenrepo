@@ -17,7 +17,7 @@ pipeline {
                     withEnv(["BROWSER=${Browsersite}"]) {
                         bat 'mvn clean install'
                     }
-                    
+
             } 
         }
         stage('Test') {
@@ -37,4 +37,5 @@ pipeline {
             archiveArtifacts 'target/*.jar'
         }
     }
+}
 }
