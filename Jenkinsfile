@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    parameters {
+   /* parameters {
         string(name: 'Browsersite', defaultValue: 'Chrome', description: 'Code to run on browser')
-    }
+    }*/ 
 
     tools {
         maven "MAVEN_HOME"
@@ -20,10 +20,10 @@ pipeline {
         }
         stage('Test') {
             steps {
-                script {
-                    bat "mvn clean test -DBrowser=${Browsersite}"
+                
+                    bat "mvn clean test -DBrowser=chrome"
                   //  bat "mvn -Dmaven.test.failure.ignore=true clean package"
-                }
+                
             }
         }
     }
