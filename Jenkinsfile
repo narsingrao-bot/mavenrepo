@@ -12,18 +12,21 @@ pipeline {
    
     stages {
         stage('Build') {
-            steps {
-
-                bat'mvn clean install'
-            }
-
+            script {
+                    // Pass Browsersite as an environment variable to Maven
+                    withEnv(["BROWSER=${Browsersite}"]) {
+                        bat 'mvn clean install'
+                    }
+                    
+            } 
         }
         stage('Test') {
             steps {
                 script {
-                    bat "mvn clean test -DBrowser=${params.Browsersite}"
-                  //  bat "mvn -Dmaven.test.failure.ignore=true clean package"
-                }
+                    // Pass Browsersite as an environment variable to Maven
+                    withEnv(["BROWSER=${Browsersite}"]) {
+                        bat "mvn clean test"
+                    }
             }
         }
     }
