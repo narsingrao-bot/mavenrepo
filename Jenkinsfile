@@ -5,22 +5,23 @@ pipeline {
         string(name: 'Browsersite', defaultValue: 'Chrome', description: 'Code to run on browser')
     }
 
-    tools {
-        maven "MAVEN_HOME"
-    }
-
     stages {
         stage('Build') {
             steps {
-                bat 'mvn clean install'
+                tools {
+
+                     maven "MAVEN_HOME"
+                }
+
             }
         }
 
         stage('Test') {
             steps {
                 script {
+
                     bat "mvn clean test -DBrowser=${Browsersite}"
-                    bat "mvn -Dmaven.test.failure.ignore=true clean package"
+                   // bat "mvn -Dmaven.test.failure.ignore=true clean package"
                 }
             }
         }
