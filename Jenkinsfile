@@ -3,23 +3,24 @@ pipeline {
 
     parameters {
         string(name: 'Browsersite', defaultValue: 'Chrome', description: 'Code to run on browser')
-    } 
+    }
 
     tools {
         maven "MAVEN_HOME"
     }
-   
-   
+
     stages {
         stage('Build') {
-            script {
+            steps {
+                script {
                     // Pass Browsersite as an environment variable to Maven
                     withEnv(["BROWSER=${Browsersite}"]) {
                         bat 'mvn clean install'
                     }
-
-            } 
+                }
+            }
         }
+
         stage('Test') {
             steps {
                 script {
@@ -27,6 +28,7 @@ pipeline {
                     withEnv(["BROWSER=${Browsersite}"]) {
                         bat "mvn clean test"
                     }
+                }
             }
         }
     }
@@ -37,5 +39,4 @@ pipeline {
             archiveArtifacts 'target/*.jar'
         }
     }
-}
 }
