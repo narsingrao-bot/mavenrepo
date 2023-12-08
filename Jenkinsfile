@@ -10,12 +10,12 @@ pipeline {
         stage('Build') {
             steps {
                 
-                git 'https://github.com/jglick/simple-maven-project-with-tests.git'
+                git 'https://github.com/narsingrao-bot/mavenrepo.git'
 
                 // Run Maven on a Unix agent.
                // sh "mvn -Dmaven.test.failure.ignore=true clean package"
 
-                 To run Maven on a Windows agent, use
+               //  To run Maven on a Windows agent, use
                  bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
 
