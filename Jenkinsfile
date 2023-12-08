@@ -1,45 +1,35 @@
 pipeline {
     agent any
 
-    parameters{
-        string(name: 'Browsersite', defaultvalue: 'Chrome', description: 'code run on browser')
+    parameters {
+        string(name: 'Browsersite', defaultValue: 'Chrome', description: 'Code to run on browser')
     }
 
     tools {
-       
         maven "MAVEN_HOME"
     }
 
     stages {
         stage('Build') {
             steps {
-                
-
                 bat 'mvn clean install'
-            
-               //  bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
-       stage('test') {
+        }
+
+        stage('Test') {
             steps {
-                
-                when{
-                    expression{
-                        bat "mvn clean test -DBrowser=${Browsersite}"
-                        bat "mvn -Dmaven.test.failure.ignore=true clean package"
-                        
-                    }
-                }
-            
-            }
-
-
-            post {
-                
-                success {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                    archiveArtifacts 'target/*.jar'
+                script {
+                    bat "mvn clean test -DBrowser=${Browsersite}"
+                    bat "mvn -Dmaven.test.failure.ignore=true clean package"
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            junit '**/target/surefire-reports/TEST-*.xml'
+            archiveArtifacts 'target/*.jar'
         }
     }
 }
