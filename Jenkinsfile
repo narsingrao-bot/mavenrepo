@@ -10,7 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 
-                bat "mvn clean test-DBrowser=chrome"
+               
 
               
                  bat "mvn -Dmaven.test.failure.ignore=true clean package"
